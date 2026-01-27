@@ -64,6 +64,7 @@ export default function Navbar() {
     { name: "Providers", href: "/providers" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
+    { name: "Dashboard", href: "/contact" },
   ];
 
   return (

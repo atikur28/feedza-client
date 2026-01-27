@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
+import HomeBanner from "@/components/homePage/HomeBanner";
 
 export default function Home() {
   return (
-    <div className="flex justify-center mt-10">
-      <Button>Click Me</Button>
+    <div className="max-w-477 mx-auto">
+      <HomeBanner />
     </div>
   );
 }
