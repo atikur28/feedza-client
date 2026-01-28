@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 type Role = "CUSTOMER" | "PROVIDER" | "ADMIN";
@@ -38,7 +39,6 @@ const LINKS = {
 
 export default function Sidebar({ role }: { role: Role }) {
   const [sheetOpen, setSheetOpen] = useState(false);
-
   const links = LINKS[role];
 
   return (
@@ -61,7 +61,7 @@ export default function Sidebar({ role }: { role: Role }) {
             </SheetTitle>
             <SidebarContent
               links={links}
-              onLinkClick={() => setSheetOpen(false)} // <-- close Sheet on link click
+              onLinkClick={() => setSheetOpen(false)}
             />
           </SheetContent>
         </Sheet>
@@ -84,21 +84,28 @@ function SidebarContent({
   links: { label: string; href: string }[];
   onLinkClick?: () => void;
 }) {
+  const pathname = usePathname();
+
   return (
     <>
       <h2 className="hidden md:flex ml-3 text-xl font-bold mb-3">Dashboard</h2>
       <ul className="space-y-3">
-        {links?.map((link) => (
-          <li key={link.href}>
-            <Link
-              href={link.href}
-              onClick={onLinkClick} // <-- closes mobile menu
-              className="block font-medium rounded-md px-3 py-2 hover:bg-gray-100 transition"
-            >
-              {link.label}
-            </Link>
-          </li>
-        ))}
+        {links?.map((link) => {
+          const isActive = pathname === link.href;
+          return (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                onClick={onLinkClick}
+                className={`block font-medium rounded-md px-3 py-2 transition hover:bg-gray-100 ${
+                  isActive ? "bg-gray-200 font-semibold" : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </>
   );
