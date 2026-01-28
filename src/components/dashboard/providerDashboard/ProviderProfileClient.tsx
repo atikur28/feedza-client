@@ -18,12 +18,11 @@ const ProviderProfileClient = ({ profile }: Props) => {
   const router = useRouter();
   const isEdit = Boolean(profile);
 
-  // State
   const [form, setForm] = useState<{
     restaurantName: string;
     address: string;
     phone: string;
-    logo?: string; // optional string, never null
+    logo?: string;
   }>({
     restaurantName: profile?.restaurantName ?? "",
     address: profile?.address ?? "",
@@ -36,12 +35,10 @@ const ProviderProfileClient = ({ profile }: Props) => {
 
   const [loading, setLoading] = useState(false);
 
-  // Input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // Image change
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -50,7 +47,6 @@ const ProviderProfileClient = ({ profile }: Props) => {
     setPreview(URL.createObjectURL(file));
   };
 
-  // Upload image to imgbb
   const uploadImageToImgbb = async (): Promise<string | undefined> => {
     if (!imageFile) return form.logo || undefined;
 
@@ -69,15 +65,12 @@ const ProviderProfileClient = ({ profile }: Props) => {
     return data.data.url;
   };
 
-  // Submit handler
   const handleSubmit = async () => {
     try {
       setLoading(true);
 
-      // upload image if selected
       const logoUrl = await uploadImageToImgbb();
 
-      // Clean payload
       const payload: {
         restaurantName: string;
         address: string;
@@ -90,7 +83,6 @@ const ProviderProfileClient = ({ profile }: Props) => {
         ...(logoUrl ? { logo: logoUrl } : {}),
       };
 
-      // API call
       const res = isEdit
         ? await providerService.updateProviderProfile(profile.id, payload)
         : await providerService.createProviderProfile(payload);
