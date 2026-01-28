@@ -34,11 +34,8 @@ export default function Navbar() {
   const router = useRouter();
 
   useEffect(() => {
-    if (session) {
-      setUserInfo(session.user as User);
-    } else {
-      setUserInfo(null);
-    }
+    if (session) setUserInfo(session.user as User);
+    else setUserInfo(null);
   }, [session]);
 
   const handleSignOut = async () => {
@@ -47,35 +44,49 @@ export default function Navbar() {
 
     try {
       await authClient.signOut();
-
-      toast.success("You have been signed out successfully!", { id: toastId });
+      toast.success("You have been signed out!", { id: toastId });
       router.refresh();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong!", { id: toastId });
     } finally {
       setLoading(false);
     }
   };
 
-  const navItems = [
+  const baseNavItems = [
     { name: "Home", href: "/" },
     { name: "Meals", href: "/meals" },
     { name: "Providers", href: "/providers" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
-    { name: "Dashboard", href: "/contact" },
   ];
+
+  const dashboardLink = userInfo
+    ? {
+        name: "Dashboard",
+        href:
+          userInfo.role === "ADMIN"
+            ? "/dashboard/admin"
+            : userInfo.role === "PROVIDER"
+              ? "/dashboard/provider"
+              : "/dashboard/customer",
+      }
+    : null;
+
+  const navItems = dashboardLink
+    ? [...baseNavItems, dashboardLink]
+    : baseNavItems;
 
   return (
     <header className="w-full border-b bg-background text-foreground">
       <nav className="max-w-450 mx-auto flex h-16 items-center justify-between px-4">
-        {/* Left Logo */}
+        {/* Logo */}
         <Link href="/" className="text-2xl font-bold">
           Feedza
         </Link>
 
-        {/* Desktop Menu */}
+        {/* Desktop menu */}
         <div className="hidden md:flex items-center gap-8">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
@@ -106,22 +117,18 @@ export default function Navbar() {
               </Button>
             ) : (
               <>
-                <Button variant="outline" asChild>
-                  <Link href="/login" className="cursor-pointer">
-                    Sign In
-                  </Link>
+                <Button className="cursor-pointer" variant="outline" asChild>
+                  <Link href="/login">Sign In</Link>
                 </Button>
-                <Button asChild>
-                  <Link href="/register" className="cursor-pointer">
-                    Sign Up
-                  </Link>
+                <Button className="cursor-pointer" asChild>
+                  <Link href="/register">Sign Up</Link>
                 </Button>
               </>
             )}
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile menu */}
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
