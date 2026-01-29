@@ -24,11 +24,7 @@ const UserListClient = ({ users: initialUsers, loggedInUser }: Props) => {
   const [users, setUsers] = useState(initialUsers);
   const [editUser, setEditUser] = useState<UserData | null>(null);
   const [updateLoadingId, setUpdateLoadingId] = useState<string | null>(null);
-  const [deleteLoadingId, setDeleteLoadingId] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<UserData>>({});
-  const [deleteUserDialog, setDeleteUserDialog] = useState<UserData | null>(
-    null,
-  );
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const ROLE_OPTIONS = ["ADMIN", "PROVIDER", "CUSTOMER"];
@@ -105,28 +101,6 @@ const UserListClient = ({ users: initialUsers, loggedInUser }: Props) => {
     closeEdit();
   };
 
-  const confirmDeleteUser = (user: UserData) => {
-    setDeleteUserDialog(user);
-  };
-
-  const handleDelete = async () => {
-    if (!deleteUserDialog) return;
-
-    setDeleteLoadingId(deleteUserDialog.id!);
-
-    const res = await adminService.deleteUser(deleteUserDialog.id!);
-    setDeleteLoadingId(null);
-    setDeleteUserDialog(null);
-
-    if (res.error) {
-      toast.error(res.error.message || "Failed to delete user");
-      return;
-    }
-
-    toast.success("User deleted successfully!");
-    setUsers(users.filter((u) => u.id !== deleteUserDialog.id));
-  };
-
   return (
     <div className="space-y-4">
       {users.map((user) => (
@@ -159,14 +133,6 @@ const UserListClient = ({ users: initialUsers, loggedInUser }: Props) => {
               className="w-full sm:w-auto cursor-pointer"
             >
               {updateLoadingId === user.id ? "Processing..." : "Edit"}
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={() => confirmDeleteUser(user)}
-              disabled={deleteLoadingId === user.id}
-              className="w-full sm:w-auto cursor-pointer"
-            >
-              {deleteLoadingId === user.id ? "Deleting..." : "Delete"}
             </Button>
           </div>
         </div>
@@ -251,41 +217,6 @@ const UserListClient = ({ users: initialUsers, loggedInUser }: Props) => {
               className="w-full sm:w-auto cursor-pointer"
             >
               {updateLoadingId === editUser?.id ? "Updating..." : "Update"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={!!deleteUserDialog}
-        onOpenChange={(open) => !open && setDeleteUserDialog(null)}
-      >
-        <DialogContent className="max-w-sm w-full">
-          <DialogHeader>
-            <DialogTitle>Confirm Delete</DialogTitle>
-          </DialogHeader>
-          <p className="mt-2 text-gray-600">
-            Are you sure you want to delete{" "}
-            <span className="font-semibold">{deleteUserDialog?.name}</span>?
-          </p>
-          <DialogFooter className="mt-4 flex flex-col sm:flex-row justify-end gap-2">
-            <Button
-              onClick={() => setDeleteUserDialog(null)}
-              variant="outline"
-              className="w-full sm:w-auto cursor-pointer"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleDelete}
-              variant="destructive"
-              disabled={deleteLoadingId !== null}
-              className="w-full sm:w-auto cursor-pointer"
-            >
-              {deleteLoadingId === deleteUserDialog?.id
-                ? "Deleting..."
-                : "Delete"}
             </Button>
           </DialogFooter>
         </DialogContent>
