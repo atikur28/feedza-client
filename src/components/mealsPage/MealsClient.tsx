@@ -25,7 +25,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cartService } from "@/services/cart.service";
 import Image from "next/image";
+import { toast } from "sonner";
 
 interface Category {
   id: string;
@@ -47,13 +49,27 @@ interface Meal {
   provider: Provider;
 }
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  image: string | null;
+  createdAt: string;
+  updatedAt: string;
+  role: "CUSTOMER" | "ADMIN" | "PROVIDER";
+  status: "ACTIVE" | "INACTIVE" | string;
+}
+
 const ITEMS_PER_PAGE = 9;
 
-const MealsClient = ({ meals }: { meals: Meal[] }) => {
+const MealsClient = ({ meals, user }: { meals: Meal[]; user: User | null }) => {
   const [category, setCategory] = useState("all");
   const [priceSort, setPriceSort] = useState("default");
   const [availability, setAvailability] = useState("all");
   const [page, setPage] = useState(1);
+  const [addingId, setAddingId] = useState<string | null>(null);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
 
   const categories = useMemo(
     () => Array.from(new Set(meals.map((m) => m.category.name))),
@@ -166,9 +182,75 @@ const MealsClient = ({ meals }: { meals: Meal[] }) => {
               </div>
             </CardContent>
 
-            <CardFooter className="mt-auto">
-              <Button asChild className="w-full" disabled={!meal.isAvailable}>
-                <Link href={`/meals/${meal.id}`}>See Details</Link>
+            <CardFooter className="mt-auto flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={() =>
+                    setQuantities((q) => ({
+                      ...q,
+                      [meal.id]: Math.max(1, (q[meal.id] || 1) - 1),
+                    }))
+                  }
+                >
+                  -
+                </Button>
+
+                <span className="min-w-6 text-center">
+                  {quantities[meal.id] || 1}
+                </span>
+
+                <Button
+                  size="icon"
+                  variant="outline"
+                  onClick={() =>
+                    setQuantities((q) => ({
+                      ...q,
+                      [meal.id]: (q[meal.id] || 1) + 1,
+                    }))
+                  }
+                >
+                  +
+                </Button>
+              </div>
+
+              <Button
+                className="w-full gap-2 bg-orange-600 hover:bg-orange-700 text-white cursor-pointer"
+                disabled={!meal.isAvailable || addingId === meal.id}
+                onClick={async () => {
+                  if (!user) {
+                    toast.error("Please login to add items to cart");
+                    return;
+                  }
+
+                  try {
+                    setAddingId(meal.id);
+
+                    const quantity = quantities[meal.id] || 1;
+
+                    const res = await cartService.addToCart({
+                      mealId: meal.id,
+                      quantity,
+                    });
+
+                    if (res.success) {
+                      toast.success("Added to cart");
+                    } else {
+                      toast.error(res.message || "Failed to add to cart");
+                    }
+                  } catch (error) {
+                    toast.error("Something went wrong");
+                  } finally {
+                    setAddingId(null);
+                  }
+                }}
+              >
+                {addingId === meal.id ? "Adding..." : "Add to Cart"}
+              </Button>
+
+              <Button asChild variant="outline" className="w-full">
+                <Link href={`/meals/${meal.id}`}>View Details</Link>
               </Button>
             </CardFooter>
           </Card>
