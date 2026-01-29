@@ -18,7 +18,7 @@ const LINKS = {
   CUSTOMER: [
     { label: "Profile", href: "/dashboard/customer" },
     { label: "My Orders", href: "/dashboard/customer/orders" },
-    { label: "My Cart", href: "/dashboard/customer/cart" },
+    { label: "My Cart", href: "/dashboard/customer/my-carts" },
     { label: "Home", href: "/" },
   ],
   PROVIDER: [
