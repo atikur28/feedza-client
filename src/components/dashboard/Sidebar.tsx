@@ -16,20 +16,19 @@ type Role = "CUSTOMER" | "PROVIDER" | "ADMIN";
 
 const LINKS = {
   CUSTOMER: [
-    { label: "Overview", href: "/dashboard/customer" },
+    { label: "Profile", href: "/dashboard/customer" },
     { label: "My Orders", href: "/dashboard/customer/orders" },
     { label: "My Cart", href: "/dashboard/customer/cart" },
-    { label: "Profile", href: "/dashboard/customer/profile" },
     { label: "Home", href: "/" },
   ],
   PROVIDER: [
-    { label: "Overview", href: "/dashboard/provider" },
+    { label: "Profile", href: "/dashboard/provider" },
     { label: "Manage Meal", href: "/dashboard/provider/meals" },
     { label: "Orders", href: "/dashboard/provider/orders" },
     { label: "Home", href: "/" },
   ],
   ADMIN: [
-    { label: "Overview", href: "/dashboard/admin" },
+    { label: "Profile", href: "/dashboard/admin" },
     { label: "Users", href: "/dashboard/admin/users" },
     { label: "Orders", href: "/dashboard/admin/orders" },
     { label: "Categories", href: "/dashboard/admin/categories" },

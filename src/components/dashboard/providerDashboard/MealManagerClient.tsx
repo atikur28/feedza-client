@@ -47,11 +47,11 @@ const MealManagerClient = ({ userId }: Props) => {
     description: "",
     price: 0,
     categoryId: "",
+    isAvailable: true,
   });
 
   const [imageFile, setImageFile] = useState<File | null>(null);
 
-  /* ---------------- Fetch Meals ---------------- */
   const fetchMeals = async () => {
     setLoadingMeals(true);
     const { data, error } = await mealService.getAllMeals();
@@ -60,7 +60,6 @@ const MealManagerClient = ({ userId }: Props) => {
     setLoadingMeals(false);
   };
 
-  /* ---------------- Fetch Categories ---------------- */
   const fetchCategories = async () => {
     const res = await categoryService.getAllCategories();
     if (!res.error) setCategories(res.data);
@@ -71,7 +70,6 @@ const MealManagerClient = ({ userId }: Props) => {
     fetchCategories();
   }, []);
 
-  /* ---------------- Image Upload ---------------- */
   const uploadToImgbb = async (file: File) => {
     const fd = new FormData();
     fd.append("image", file);
@@ -84,7 +82,6 @@ const MealManagerClient = ({ userId }: Props) => {
     return data.data.url;
   };
 
-  /* ---------------- Save Meal ---------------- */
   const handleSave = async () => {
     try {
       setSaving(true);
@@ -110,7 +107,6 @@ const MealManagerClient = ({ userId }: Props) => {
     }
   };
 
-  /* ---------------- Delete Meal ---------------- */
   const handleDelete = async () => {
     if (!mealToDelete) return;
 
@@ -130,7 +126,6 @@ const MealManagerClient = ({ userId }: Props) => {
     }
   };
 
-  /* ---------------- UI ---------------- */
   return (
     <>
       <div className="flex justify-end mb-6">
@@ -172,6 +167,13 @@ const MealManagerClient = ({ userId }: Props) => {
                     Category: {mealCategory?.name || "N/A"}
                   </p>
                   <p className="font-semibold">৳ {meal.price}</p>
+                  <p
+                    className={`text-sm font-medium ${
+                      meal.isAvailable ? "text-green-600" : "text-red-500"
+                    }`}
+                  >
+                    {meal.isAvailable ? "Available" : "Unavailable"}
+                  </p>
 
                   <div className="flex gap-2 pt-2">
                     <Button
@@ -186,6 +188,7 @@ const MealManagerClient = ({ userId }: Props) => {
                           price: meal.price,
                           image: meal.image,
                           categoryId: meal.categoryId ?? "",
+                          isAvailable: meal.isAvailable ?? true,
                         });
                         setDialogOpen(true);
                       }}
@@ -267,6 +270,17 @@ const MealManagerClient = ({ userId }: Props) => {
               accept="image/*"
               onChange={(e) => setImageFile(e.target.files?.[0] || null)}
             />
+
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={form.isAvailable}
+                onChange={(e) =>
+                  setForm({ ...form, isAvailable: e.target.checked })
+                }
+              />
+              <span className="text-sm">Available for order</span>
+            </div>
           </div>
 
           <DialogFooter>
