@@ -22,7 +22,8 @@ const LINKS = {
     { label: "Home", href: "/" },
   ],
   PROVIDER: [
-    { label: "Profile", href: "/dashboard/provider" },
+    { label: "Restaurant Info", href: "/dashboard/provider" },
+    { label: "Profile", href: "/dashboard/provider/profile" },
     { label: "Manage Meal", href: "/dashboard/provider/meals" },
     { label: "Orders", href: "/dashboard/provider/orders" },
     { label: "Home", href: "/" },
