@@ -132,7 +132,13 @@ const MealManagerClient = ({ userId }: Props) => {
         <Button
           onClick={() => {
             setEditingMeal(null);
-            setForm({ name: "", description: "", price: 0, categoryId: "" });
+            setForm({
+              name: "",
+              description: "",
+              price: 0,
+              categoryId: "",
+              isAvailable: true,
+            });
             setImageFile(null);
             setDialogOpen(true);
           }}
