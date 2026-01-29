@@ -19,6 +19,14 @@ export const mealService = {
     return res.json();
   },
 
+  getMealById: async (id: string) => {
+    const res = await fetch(`${API_URL}/api/meals/${id}`, {
+      cache: "no-store",
+      credentials: "include",
+    });
+    return res.json();
+  },
+
   createMeal: async (payload: MealData) => {
     const res = await fetch(`${API_URL}/api/meals`, {
       method: "POST",
