@@ -75,6 +75,7 @@ const MealSlider = ({ title, meals }: MealSliderProps) => {
                   alt={meal.name}
                   fill
                   className="block object-cover transition-transform duration-300 ease-out hover:scale-110"
+                  unoptimized
                 />
               </div>
               <CardHeader>

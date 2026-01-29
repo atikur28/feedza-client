@@ -8,7 +8,7 @@ const MealsPage = async () => {
 
   const loggedInUserData = await userService.getSession();
 
-  const user = loggedInUserData.data.user || null;
+  const user = loggedInUserData?.data?.user || null;
 
   return (
     <div className="container mx-auto px-4 space-y-10 pb-10">
