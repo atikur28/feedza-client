@@ -51,6 +51,7 @@ const MealsDetails = async ({
             alt={meal.name}
             fill
             className="object-cover transition-transform duration-300 ease-out hover:scale-105"
+            unoptimized
           />
         </div>
 

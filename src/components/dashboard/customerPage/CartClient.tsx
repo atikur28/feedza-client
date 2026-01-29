@@ -150,6 +150,7 @@ const CartClient = ({ userId }: Props) => {
                 width={80}
                 height={80}
                 className="rounded-md"
+                unoptimized
               />
             )}
             <div>

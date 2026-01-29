@@ -58,6 +58,7 @@ const ProviderDetails = async ({
                   alt="Provider Logo"
                   fill
                   className="object-cover"
+                  unoptimized
                 />
               </div>
             )}

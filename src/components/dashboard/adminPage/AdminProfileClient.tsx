@@ -80,6 +80,7 @@ const AdminProfileClient = ({ user }: Props) => {
               alt="Profile Image"
               fill
               className="object-cover"
+              unoptimized
             />
           ) : (
             <UserIcon size={48} className="text-gray-400" />

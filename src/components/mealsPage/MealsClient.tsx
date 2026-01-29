@@ -160,6 +160,7 @@ const MealsClient = ({ meals, user }: { meals: Meal[]; user: User | null }) => {
                 alt={meal.name}
                 fill
                 className="block object-cover transition-transform duration-300 ease-out hover:scale-110"
+                unoptimized
               />
             </div>
 

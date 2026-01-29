@@ -23,6 +23,7 @@ const ProviderCard = ({ provider }: ProviderCardProps) => {
             alt={provider.restaurantName}
             fill
             className="object-cover"
+            unoptimized
           />
         ) : (
           <div className="w-full h-full bg-gray-300 flex items-center justify-center text-white font-bold text-2xl">

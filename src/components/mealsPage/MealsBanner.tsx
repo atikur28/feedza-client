@@ -9,6 +9,7 @@ const MealsBanner = () => {
           alt="Delicious Meals"
           fill
           className="object-cover rounded-2xl"
+          unoptimized
         />
         <div className="absolute inset-0 bg-black/10 flex flex-col items-center justify-center text-center px-4 sm:px-6">
           <h1 className="text-foreground font-bold text-2xl sm:text-4xl md:text-5xl lg:text-6xl">

@@ -45,6 +45,7 @@ export default function ProviderMealsClient({
                     alt={meal.name}
                     fill
                     className="object-cover"
+                    unoptimized
                   />
                 </div>
               ) : (
