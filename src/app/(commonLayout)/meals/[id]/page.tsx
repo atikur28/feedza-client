@@ -1,6 +1,7 @@
 import MealsDetailsBanner from "@/components/mealsPage/MealDetailsBanner";
 import MealSlider from "@/components/mealsPage/MealSlider";
 import OrderButton from "@/components/mealsPage/OrderButton";
+import ReviewSection from "@/components/mealsPage/ReviewSection";
 import { adminService } from "@/services/admin.service";
 import { mealService } from "@/services/meal.service";
 import { userService } from "@/services/user.service";
@@ -75,6 +76,7 @@ const MealsDetails = async ({
                   width={50}
                   height={50}
                   className="rounded-full object-cover border border-gray-300"
+                  unoptimized
                 />
               ) : (
                 <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold">
@@ -141,6 +143,12 @@ const MealsDetails = async ({
           )}
         </div>
       </div>
+
+      <ReviewSection
+        mealId={meal?.id}
+        userInfo={userInfo?.data}
+        loggedInUser={user || null}
+      />
 
       {sameCategory.length > 0 && (
         <MealSlider title="More from this category" meals={sameCategory} />
