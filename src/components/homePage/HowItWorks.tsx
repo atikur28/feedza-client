@@ -28,7 +28,7 @@ export default function HowItWorks() {
       <div className="container mx-auto px-4">
         {/* Main Header */}
         <h2 className="text-center text-3xl md:text-4xl font-bold mb-12">
-          HOW IT WORKS
+          How It <span className="text-orange-500">Works</span>
         </h2>
 
         {/* Cards */}

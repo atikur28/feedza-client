@@ -72,14 +72,6 @@ export default function Footer() {
                   Sign Up
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/orders"
-                  className="hover:text-primary hover:underline"
-                >
-                  My Orders
-                </Link>
-              </li>
             </ul>
           </div>
 
