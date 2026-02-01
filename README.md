@@ -1,4 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Feedza 🍱 — Frontend
+
+**Feedza** is a modern full-stack food ordering platform where users can discover meals, place orders, and track delivery status.  
+This repository contains the **frontend** application built with Next.js and TypeScript, focusing on performance, scalability, and clean UI/UX.
+
+---
+
+## 🌐 Live & Source
+
+- **Live Website**: [Feedza Frontend](https://feedza.vercel.app)
+- **Frontend Code**: [GitHub Repository](https://github.com/atikur28/feedza-client)
+- **Backend API**: [Feedza Backend Live](https://feedza-server.vercel.app)
+- **Backend Code**: [Backend Repository](https://github.com/atikur28/feedza-server)
+
+---
+
+## 🛠️ Tech Stack (Frontend)
+
+- **Next.js (App Router)** — Server-side rendering & routing
+- **TypeScript** — Type safety & maintainability
+- **Tailwind CSS** — Responsive and consistent UI
+- **ShadCN UI** — Reusable UI components
+- **Lucide Icons** — Icon system
+- **Better Auth (Client)** — Authentication handling
+- **Fetch API** — API communication
+
+---
+
+## ✨ Key Features (Frontend)
+
+### 🌍 Public Features
+
+- Browse meals and providers
+- Filter meals by category and price
+- View detailed meal & provider pages
+- Responsive homepage with multiple sections
+
+### 👤 Customer Features
+
+- Register & login
+- Add meals to cart
+- Place orders (Cash on Delivery)
+- Track order status
+- View order history
+- Manage profile
+
+### 🍳 Provider Features
+
+- Provider dashboard
+- Manage menu items (CRUD)
+- View incoming orders
+- Update order status
+
+### 🛡️ Admin Features
+
+- Admin dashboard
+- Manage users (activate/suspend)
+- View all orders
+- Manage food categories
+
+---
+
+## ⚙️ Environment Variables (Frontend)
+
+Create a `.env.local` file in the root directory.
+
+```env
+NEXT_PUBLIC_BACKEND_URL=https://example-backend.vercel.app
+NEXT_PUBLIC_FRONTEND_URL=https://example-frontend.vercel.app
+NEXT_PUBLIC_AUTH_URL=https://example-backend.vercel.app/api/auth
+NEXT_PUBLIC_IMGBB_API_KEY=your_imgbb_api_key_here
+```
 
 ## Getting Started
 
@@ -15,22 +86,3 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
