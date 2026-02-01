@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const API_URL = typeof window !== "undefined" ? "" : process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export interface CategoryData {
   id?: string;
@@ -11,6 +11,7 @@ export const categoryService = {
     try {
       const res = await fetch(`${API_URL}/api/categories`, {
         cache: "no-store",
+        credentials: "include",
       });
       const data = await res.json();
       return data.success
@@ -23,7 +24,9 @@ export const categoryService = {
 
   getCategoryById: async (id: string) => {
     try {
-      const res = await fetch(`${API_URL}/api/categories/${id}`);
+      const res = await fetch(`${API_URL}/api/categories/${id}`, {
+        credentials: "include",
+      });
       const data = await res.json();
       return data.success
         ? { data: data.data, error: null }

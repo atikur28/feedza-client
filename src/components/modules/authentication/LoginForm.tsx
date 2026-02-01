@@ -43,7 +43,8 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
 
         toast.success("User Logged in Successfully", { id: toastId });
 
-        router.push("/");
+        // Hard navigation to ensure cookies are readable by the client
+        window.location.href = "/";
       } catch (err) {
         toast.error("Something went wrong, please try again.", { id: toastId });
       }

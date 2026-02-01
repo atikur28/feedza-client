@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const API_URL = typeof window !== "undefined" ? "" : process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export interface MealData {
   id?: string;

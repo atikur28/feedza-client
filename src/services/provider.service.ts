@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const API_URL = typeof window !== "undefined" ? "" : process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export interface ProviderProfileData {
   id?: string;
@@ -13,6 +13,7 @@ export const providerService = {
     try {
       const res = await fetch(`${API_URL}/api/providers`, {
         cache: "no-store",
+        credentials: "include",
       });
       const data = await res.json();
 
@@ -26,7 +27,9 @@ export const providerService = {
 
   getProviderById: async (id: string) => {
     try {
-      const res = await fetch(`${API_URL}/api/providers/${id}`);
+      const res = await fetch(`${API_URL}/api/providers/${id}`, {
+        credentials: "include",
+      });
       const data = await res.json();
 
       return data.success
