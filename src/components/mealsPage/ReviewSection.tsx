@@ -160,9 +160,7 @@ export default function ReviewSection({
             </div>
 
             {review.comment && (
-              <p className="text-gray-600 mt-2">
-                {userInfo?.name || "Anonymous"}: {review.comment}
-              </p>
+              <p className="text-gray-600 mt-2">{review.comment}</p>
             )}
           </div>
         ))}

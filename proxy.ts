@@ -1,56 +1,96 @@
+import { userService } from "@/services/user.service";
 import { NextRequest, NextResponse } from "next/server";
 
-const AUTH_API = process.env.NEXT_PUBLIC_AUTH_URL;
-
-const DASHBOARD_MAP = {
-  ADMIN: "/dashboard/admin",
-  CUSTOMER: "/dashboard/customer",
-  PROVIDER: "/dashboard/provider",
+const Roles = {
+  admin: "ADMIN",
+  provider: "PROVIDER",
+  customer: "CUSTOMER",
 } as const;
 
-type Role = keyof typeof DASHBOARD_MAP;
-
 export async function proxy(request: NextRequest) {
-  try {
-    const pathname = request.nextUrl.pathname;
+  const pathname = request.nextUrl.pathname;
+  let isAuthenticated = false;
+  let isAdmin = false;
+  let isProvider = false;
+  let isCustomer = false;
 
-    const cookie = request.headers.get("cookie") || "";
+  const { data } = await userService.getSession();
 
-    const res = await fetch(`${AUTH_API}/get-session`, {
-      headers: {
-        Cookie: cookie,
-      },
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      return NextResponse.redirect(new URL("/login", request.url));
+  if (data) {
+    isAuthenticated = true;
+    if (data.role === Roles.admin) {
+      isAdmin = true;
+    } else if (data.role === Roles.provider) {
+      isProvider = true;
+    } else if (data.role === Roles.customer) {
+      isCustomer = true;
     }
+  }
 
-    const session = await res.json();
-
-    if (!session?.user) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-
-    const role = session.user.role as Role;
-    const dashboardPath = DASHBOARD_MAP[role];
-
-    if (pathname === "/dashboard" || pathname === "/dashboard/") {
-      return NextResponse.redirect(new URL(dashboardPath, request.url));
-    }
-
-    if (!pathname.startsWith(dashboardPath)) {
-      return NextResponse.redirect(new URL(dashboardPath, request.url));
-    }
-
-    return NextResponse.next();
-  } catch (error) {
-    console.log("Proxy auth error:", error);
+  if (!isAuthenticated) {
     return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  if (pathname === "/dashboard") {
+    if (isAdmin) {
+      return NextResponse.redirect(new URL("/dashboard/admin", request.url));
+    }
+
+    if (isProvider) {
+      return NextResponse.redirect(new URL("/dashboard/provider", request.url));
+    }
+
+    if (isCustomer) {
+      return NextResponse.redirect(new URL("/dashboard/customer", request.url));
+    }
+
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  if (isAdmin && pathname.startsWith("/dashboard/provider")) {
+    return NextResponse.redirect(new URL("/dashboard/admin", request.url));
+  }
+
+  if (isAdmin && pathname.startsWith("/dashboard/customer")) {
+    return NextResponse.redirect(new URL("/dashboard/admin", request.url));
+  }
+
+  if (!isAdmin && isProvider && pathname.startsWith("/dashboard/admin")) {
+    return NextResponse.redirect(new URL("/dashboard/provider", request.url));
+  }
+
+  if (!isAdmin && isProvider && pathname.startsWith("/dashboard/customer")) {
+    return NextResponse.redirect(new URL("/dashboard/provider", request.url));
+  }
+
+  if (
+    !isAdmin &&
+    !isProvider &&
+    isCustomer &&
+    pathname.startsWith("/dashboard/admin")
+  ) {
+    return NextResponse.redirect(new URL("/dashboard/customer", request.url));
+  }
+
+  if (
+    !isAdmin &&
+    !isProvider &&
+    isCustomer &&
+    pathname.startsWith("/dashboard/provider")
+  ) {
+    return NextResponse.redirect(new URL("/dashboard/customer", request.url));
   }
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: [
+    "/dashboard",
+    "/dashboard/:path*",
+    "/dashboard/admin",
+    "/dashboard/admin/:path*",
+    "/dashboard/provider",
+    "/dashboard/provider/:path*",
+    "/dashboard/customer",
+    "/dashboard/customer/:path*",
+  ],
 };
